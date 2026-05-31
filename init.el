@@ -94,7 +94,7 @@
 
 (setq confirm-kill-processes nil)
 
-(add-to-list 'default-frame-alist '(font . "Monoid-12"))
+(add-to-list 'default-frame-alist '(font . "Monoisome-12"))
 (set-frame-parameter nil 'alpha-background 80)
 (add-to-list 'default-frame-alist '(alpha-background . 80))
 
@@ -106,6 +106,7 @@
                          (eq (caar entry) 'wakib-keys))
                     (let* ((old-map (cdar entry))
                            (new-map (copy-keymap old-map)))
+		            (define-key new-map (kbd "C-v") #'vterm-yank-primary)
                             (define-key new-map (kbd "C-r") #'vterm--self-insert)
                             (define-key new-map (kbd "C-c") #'vterm--self-insert)
                       (list (cons 'wakib-keys new-map)))
@@ -249,7 +250,7 @@
   :diminish counsel-mode
   :config
   (counsel-mode 1)
-  (define-key wakib-keys-overriding-map (kbd "C-S-v") 'counsel-yank-pop))
+  ;;(define-key wakib-keys-overriding-map (kbd "C-S-v") 'counsel-yank-pop))
 
 ;; find out what ivy uses from smex
 (use-package smex)
@@ -432,7 +433,7 @@
 ;; Setup Splash Screen
 (setq inhibit-startup-screen t)
 (setq-default major-mode 'org-mode)
-(setq-default initial-scratch-message ";; Emacs lisp scratch buffer. Happy hacking.\n\n")
+(setq-default initial-scratch-message nil)
 
 ;; Start with a blank buffer unless Emacs was started with a file to open.
 ;; Otherwise causes split window when opening file from command line or GUI.
