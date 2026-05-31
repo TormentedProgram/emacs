@@ -64,9 +64,80 @@
 ;; -------------------
 ;; Initial Setup
 ;; -------------------
-(tool-bar-mode -1)
-(unless (display-graphic-p)
-  (menu-bar-mode -1))
+
+;; CUSTOM STUFF
+
+(defun blur/i-hate-kdeblur ()
+  (let* ((wid (frame-parameter nil 'outer-window-id))
+         (cmd (format "xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id %s" wid)))
+    (shell-command cmd)))
+
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+
+(setq-default cursor-type '(bar . 2))
+
+(setq dashboard-image-banner-max-height 420)
+(setq dashboard-image-banner-max-width 420)
+
+(setq-default truncate-lines t)
+(window-divider-mode 1)
+(tab-bar-mode 1)
+(global-display-line-numbers-mode 1)
+
+(add-hook 'vterm-mode-hook (lambda ()
+  (display-line-numbers-mode -1)
+  (setq vterm-timer-delay nil)
+))
+
+(setq confirm-kill-processes nil)
+
+(add-to-list 'default-frame-alist '(font . "Monoid-12"))
+(set-frame-parameter nil 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
+
+(add-hook 'vterm-mode-hook
+   (lambda ()
+    (setq-local emulation-mode-map-alists
+		(mapcar (lambda (entry)
+                (if (and (consp entry)
+                         (eq (caar entry) 'wakib-keys))
+                    (let* ((old-map (cdar entry))
+                           (new-map (copy-keymap old-map)))
+                      (define-key new-map (kbd "C-r") #'vterm--self-insert)
+                      (list (cons 'wakib-keys new-map)))
+                  entry))
+              emulation-mode-map-alists))))
+
+(setq dashboard-footer-messages '(
+  "You don’t need a criminal lawyer. You need a *criminal* lawyer."
+  "I'm not Aquaman, or a merman, or a wolfman. I'm not a brahman, or common. I'm not a caiman either, so you don't really need to worry about anything."
+  "Guys, we need to check the back of the rooms! Kane Pixels: I have a GREAT idea!"
+))
+
+(let* ((dir (expand-file-name "dashboard-images/" user-emacs-directory))
+       (files (directory-files dir t "\\.xpm$")))
+  (when files
+    (setq dashboard-startup-banner
+          (nth (random (length files)) files))))
+
+(add-hook 'after-make-frame-functions
+  (lambda (f)
+    (when (display-graphic-p f)
+      (run-with-timer 0.1 nil #'blur/i-hate-kdeblur))))
+
+(add-hook 'server-after-make-frame-hook
+  (lambda ()
+    (if (display-graphic-p)
+      (progn
+        (menu-bar-mode 1)
+        (tool-bar-mode -1)
+        (dashboard-open))
+        (menu-bar-mode -1))))
+
+(add-hook 'csharp-mode-hook #'eglot-ensure)
+
+;; END OF CUSTOM STUFF
 
 (cua-selection-mode 1)
 (define-key cua-global-keymap (kbd "<C-return>") nil)
