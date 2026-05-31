@@ -72,8 +72,10 @@
          (cmd (format "xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id %s" wid)))
     (shell-command cmd)))
 
-(require 'dashboard)
-(dashboard-setup-startup-hook)
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
 
 (setq-default cursor-type '(bar . 2))
 
@@ -186,9 +188,9 @@
 ;; -------------------
 ;; Theme
 ;; -------------------
-(use-package moe-theme
+(use-package catppuccin-theme
   :config
-  (load-theme 'moe-dark t)
+  (load-theme 'catppuccin t)
   ;; diff-hl
   (custom-theme-set-faces
    'moe-dark
