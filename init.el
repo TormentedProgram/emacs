@@ -103,8 +103,8 @@
 (setq confirm-kill-processes nil)
 
 (add-to-list 'default-frame-alist '(font . "Monoisome-12"))
-(set-frame-parameter nil 'alpha-background 80)
-(add-to-list 'default-frame-alist '(alpha-background . 80))
+(set-frame-parameter nil 'alpha-background 75)
+(add-to-list 'default-frame-alist '(alpha-background . 75))
 
 (add-hook 'vterm-mode-hook
    (lambda ()
