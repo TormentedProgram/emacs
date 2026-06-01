@@ -127,7 +127,7 @@
                                      map))))
 
 (setq dashboard-footer-messages '(
-  "You don’t need a criminal lawyer. You need a *criminal* lawyer."
+  "You don’t need a criminal lawyer. You need a criminal lawyer."
   "I'm not Aquaman, or a merman, or a wolfman. I'm not a brahman, or common. I'm not a caiman either, so you don't really need to worry about anything."
   "Guys, we need to check the back of the rooms! Kane Pixels: I have a GREAT idea!"
 ))
@@ -145,11 +145,10 @@
 
 (add-hook 'server-after-make-frame-hook
   (lambda ()
-    (if (display-graphic-p)
+    (when (display-graphic-p)
       (progn
         (menu-bar-mode 1)
         (tool-bar-mode -1)
-        (dashboard-open))
         (menu-bar-mode -1))))
 
 (add-hook 'csharp-mode-hook #'eglot-ensure)
@@ -448,14 +447,12 @@
 (setq-default major-mode 'org-mode)
 (setq-default initial-scratch-message nil)
 
-;; Start with a blank buffer unless Emacs was started with a file to open.
+;; Start with the dashboard unless Emacs was started with a file to open.
 ;; Otherwise causes split window when opening file from command line or GUI.
-(unless (< 1 (length command-line-args)) (setq initial-buffer-choice (lambda (&optional _)
-			      (let ((buf (generate-new-buffer "untitled")))
-				(set-buffer-major-mode buf)
-				(message "New Buffer Started")
-				(message (number-to-string (length command-line-args)))
-				buf))))
+(unless (< 1 (length command-line-args)) (setq initial-buffer-choice
+      (lambda ()
+        (dashboard-open)
+        (get-buffer "*dashboard*"))))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t t)
