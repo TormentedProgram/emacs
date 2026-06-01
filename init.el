@@ -67,6 +67,14 @@
 
 ;; CUSTOM STUFF
 
+(defun copy/traditional-copy ()
+  (interactive)
+  (if (use-region-p)
+    (kill-ring-save (region-beginning) (region-end))
+    (vterm--self-insert)
+  )
+)
+
 (defun blur/i-hate-kdeblur ()
   (let* ((wid (frame-parameter nil 'outer-window-id))
          (cmd (format "xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id %s" wid)))
@@ -112,6 +120,11 @@
                       (list (cons 'wakib-keys new-map)))
                   entry))
               emulation-mode-map-alists))))
+
+(add-to-list 'emulation-mode-map-alists
+             `((my-copy-overlay . ,(let ((map (make-sparse-keymap)))
+                                     (define-key map (kbd "C-c") #'my/copy-or-self-insert)
+                                     map))))
 
 (setq dashboard-footer-messages '(
   "You don’t need a criminal lawyer. You need a *criminal* lawyer."
