@@ -67,9 +67,9 @@
 
 ;; CUSTOM STUFF
 
-(defun copy/traditional-copy ()
+(defun copy/vterm-copy ()
   (interactive)
-  (if (use-region-p)
+  (if (mark-active)
     (kill-ring-save (region-beginning) (region-end))
     (vterm--self-insert)
   )
@@ -114,9 +114,9 @@
                          (eq (caar entry) 'wakib-keys))
                     (let* ((old-map (cdar entry))
                            (new-map (copy-keymap old-map)))
-		            (define-key new-map (kbd "C-v") #'vterm-yank-primary)
+                            (define-key new-map (kbd "C-v") #'vterm-yank-primary)
                             (define-key new-map (kbd "C-r") #'vterm--self-insert)
-                            (define-key new-map (kbd "C-c") #'vterm--self-insert)
+                            (define-key new-map (kbd "C-c") #'copy/vterm-copy)
                       (list (cons 'wakib-keys new-map)))
                   entry))
               emulation-mode-map-alists))))
