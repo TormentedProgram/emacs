@@ -154,9 +154,8 @@
   (lambda ()
     (when (display-graphic-p)
       (progn
-        (menu-bar-mode 1)
         (tool-bar-mode -1)
-        (menu-bar-mode -1))))
+        (menu-bar-mode 1))))
 
 (add-hook 'csharp-mode-hook #'eglot-ensure)
 
@@ -203,8 +202,6 @@
 ;; I hate browsing directories and seeing 'Emacs was Here' everywhere
 (setq create-lockfiles nil
       make-backup-files nil)
-
-
 
 ;; -------------------
 ;; Theme
@@ -456,6 +453,7 @@
 
 ;; dired hiding keybind
 (add-hook 'dired-mode-hook (lambda ()
+  (dired-omit-mode 1)
   (local-set-key (kbd "C-h") 'dired-omit-mode)))
 
 ;; Start with the dashboard unless Emacs was started with a file to open.
