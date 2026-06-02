@@ -447,6 +447,10 @@
 (setq-default major-mode 'org-mode)
 (setq-default initial-scratch-message nil)
 
+;; dired hiding keybind
+(add-hook 'dired-mode-hook (lambda ()
+  (local-set-key (kbd "C-h") 'dired-omit-mode)))
+
 ;; Start with the dashboard unless Emacs was started with a file to open.
 ;; Otherwise causes split window when opening file from command line or GUI.
 (unless (< 1 (length command-line-args)) (setq initial-buffer-choice
