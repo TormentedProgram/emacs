@@ -73,7 +73,14 @@
     (kill-ring-save (region-beginning) (region-end))
     (vterm--self-insert)
   )
-)
+  )
+
+(defun please/new-terminal ()
+  (interactive)
+  (let ((default-directory (if (derived-mode-p 'dired-mode)
+                               (dired-current-directory)
+                             default-directory)))
+    (vterm (format "*vterm-%s*" (float-time)))))
 
 (defun blur/i-hate-kdeblur ()
   (let* ((wid (frame-parameter nil 'outer-window-id))
